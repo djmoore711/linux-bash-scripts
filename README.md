@@ -11,5 +11,5 @@ This script is good for cleaning up files that may have been downloaded into a s
 ## install_webmin_debian_ubuntu.sh
 This script installs the [WebMin](https://www.webmin.com/deb.html) interface on Ubuntu. I have tried to simplify the installation with the following code snippet. Just copy it and paste it into your Ubuntu terminal for an automated install. 
 ```
-cd ~/ && curl https://raw.githubusercontent.com/djmoore711/bash-scripts/main/install_webmin_debian_ubuntu.sh && chmod u+x ./install_webmin_debian_ubuntu.sh && sudo ./install_webmin_debian_ubuntu.sh
+cd ~/ && wget https://raw.githubusercontent.com/djmoore711/bash-scripts/main/install_webmin_debian_ubuntu.sh && chmod u+x ./install_webmin_debian_ubuntu.sh && sudo ./install_webmin_debian_ubuntu.sh
 ```
