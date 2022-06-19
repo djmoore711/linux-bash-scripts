@@ -38,8 +38,10 @@ install () {
     if test -f "$FILE"; then
         echo "$FILE exists."
         {
+                echo " "
                 echo "# Adding repository for WebMin"
-                echo "deb https://download.webmin.com/download/repository sarge contrib"
+                echo "deb [signed-by=/usr/share/keyrings/jcameron-key-archive-keyring.gpg]"
+                echo "https://download.webmin.com/download/repository sarge contrib"
                 } >> "$FILE"
     else
         echo "$FILE does not exist, adding repository another way."
@@ -47,16 +49,19 @@ install () {
         cd "$DIR/" || { echo "Failure"; exit 1; }
         touch "sources.list"
         {
-                echo "# Adding repository for WebMin"
-                echo "deb [signed-by=/usr/share/keyrings/jcameron-key.gpg]"
-                echo "https://download.webmin.com/download/repository sarge contrib"
-                } >> "$DIR/sources.list"
+            echo " "
+            echo "# Adding repository for WebMin"
+            echo "deb [signed-by=/usr/share/keyrings/jcameron-key.gpg]"
+            echo "https://download.webmin.com/download/repository sarge contrib"
+            } >> "$DIR/sources.list"
     fi
 
     ##### Installing GPG key for jcameron
-    cd /root || { echo "Failure"; exit 1; }
-    wget https://download.webmin.com/jcameron-key.asc
-    cat jcameron-key.asc | gpg --dearmor >/usr/share/keyrings/jcameron-key.gpg
+    cd ~ || { echo "Failure"; exit 1; }
+    wget -O- https://download.webmin.com/jcameron-key.asc
+    cat ./jcameron-key.asc |
+    gpg --dearmor |
+    sudo tee /usr/share/keyrings/webmin-jcameron-archive-keyring.gpg
 
     ##### Update ATP and install WebMin
     apt install apt-transport-https
