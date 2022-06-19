@@ -7,16 +7,7 @@
 #
 ##############################################################################
 
-##### Checking if WebMin is already installed
-WMINCHK=$(which webmin)
-if test -f "$WMINCHK"; then
-    echo "WebMin is already installed. Now exiting..."
-    exit
-else
-    install
-fi
-
-#   Function to install WebMin on Ubuntu
+#### Function to install WebMin on Ubuntu
 install () {
     echo "WebMin is not installed, proceeding with installation..."
 
@@ -85,3 +76,12 @@ install () {
         exit
     fi
 }
+
+##### Checking if WebMin is already installed
+WMINCHK=$(which webmin)
+if test -f "$WMINCHK"; then
+    echo "WebMin is already installed. Now exiting..."
+    exit
+else
+    install
+fi
