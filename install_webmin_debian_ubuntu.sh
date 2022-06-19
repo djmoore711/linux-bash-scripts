@@ -19,7 +19,6 @@ install () {
     echo " "
     echo "Proceeding with installation... "
     echo " "
-    echo "##############################################################################"
 
 
     ##### Check for dependencies and install them if required
@@ -32,14 +31,12 @@ install () {
         echo " "
         echo "$WGET is already installed."
         echo " "
-        echo "##############################################################################"
 
     else
         echo "##############################################################################"
         echo " "
         echo "Installing wget"
         echo " "
-        echo "##############################################################################"
         apt install wget -y
     fi
 
@@ -49,13 +46,11 @@ install () {
         echo " "
         echo "$GPG is already installed."
         echo " "
-        echo "##############################################################################"
     else
         echo "##############################################################################"
         echo " "
         echo "Installing gpg"
         echo " "
-        echo "##############################################################################"
         apt install gpg -y
     fi
 
@@ -70,12 +65,10 @@ install () {
         {
                 echo " "
                 echo "# Adding repository for WebMin"
-                echo "deb [signed-by=/usr/share/keyrings/jcameron-key-archive-keyring.gpg]"
-                echo "https://download.webmin.com/download/repository sarge contrib"
+                echo "deb [signed-by=/usr/share/keyrings/webmin-jcameron-archive-keyring.gpg] https://download.webmin.com/download/repository sarge contrib"
                 } >> "$FILE"
         echo "The $FILE file has been updated."
         echo " "
-        echo "##############################################################################"
     else
         echo "##############################################################################"
         echo " "
@@ -86,39 +79,23 @@ install () {
         {
             echo " "
             echo "# Adding repository for WebMin"
-            echo "deb [signed-by=/usr/share/keyrings/jcameron-key.gpg]"
-            echo "https://download.webmin.com/download/repository sarge contrib"
+            echo "deb [signed-by=/usr/share/keyrings/webmin-jcameron-archive-keyring.gpg] https://download.webmin.com/download/repository sarge contrib"
             } >> "$DIR/sources.list"
         echo " "
         echo "The $DIR/sources.list file has been created and updated."
-        echo " "
-        echo "##############################################################################"
         echo " "
     fi
 
     ##### Installing GPG key for jcameron
     echo "##############################################################################"
     echo "Now importing public key for WebMin repository"
+    echo " "
     cd ~ || { echo "Could not move to home directory"; exit 1; }
-    wget https://download.webmin.com/jcameron-key.asc
-    cat ./jcameron-key.asc |
+    wget -O- https://download.webmin.com/jcameron-key.asc |
     gpg --dearmor |
-    sudo tee /usr/share/keyrings/webmin-jcameron-archive-keyring.gpg
+    sudo tee /usr/share/keyrings/webmin-jcameron-archive-keyring.gpg ||
+    { echo "Key was not successfully imported. Exiting install."; exit 1; }
 
-    ##### Check if key was installed
-    KEY=/usr/share/keyrings/webmin-jcameron-archive-keyring.gpg
-    if test -f "$KEY"; then
-        echo " "
-        echo "Key successfully imported! Continuing with installation."
-        echo " "
-        echo "##############################################################################"
-
-    else
-        echo " "
-        { echo "Key was not successfully imported. Exiting install."; exit 1; }
-        echo " "
-        echo "##############################################################################"
-    fi
 
     ##### Update ATP and install WebMin
     echo " "
