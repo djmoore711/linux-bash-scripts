@@ -58,8 +58,7 @@ install () {
 
     ##### Installing GPG key for jcameron
     cd ~ || { echo "Failure"; exit 1; }
-    wget -O- https://download.webmin.com/jcameron-key.asc
-    cat ./jcameron-key.asc |
+    wget -O- https://download.webmin.com/jcameron-key.asc |
     gpg --dearmor |
     sudo tee /usr/share/keyrings/webmin-jcameron-archive-keyring.gpg
 
