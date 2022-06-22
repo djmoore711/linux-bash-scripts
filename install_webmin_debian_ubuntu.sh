@@ -39,7 +39,7 @@ header_check () {
 
 ##### Function to check if /etc/apt/sources.list was updated properly
 source_file_check () {
-    if greg -q webmin $FILE; then
+    if grep -q webmin $FILE; then
         echo "The $FILE file was updated successfully; proceeding with install."
     else
         echo "The $FILE file was not updated properly; exiting install."
@@ -48,7 +48,7 @@ source_file_check () {
 }
 
 created_source_file_check () {
-    if greg -q webmin "$DIR/sources.list"; then
+    if grep -q webmin "$DIR/sources.list"; then
         echo "The $DIR/sources.list file was updated successfully; proceeding with install."
     else
         echo "The $DIR/sources.list file was not updated properly; exiting install."
