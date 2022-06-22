@@ -11,6 +11,8 @@
 FILE=/etc/apt/sources.list
 DIR=/etc/apt/sources.list.d
 KEY=/usr/share/keyrings/webmin-jcameron-archive-keyring.gpg
+WGET=$(which wget)
+GPG=$(which gpg)
 
 header_check () {
     echo " "
@@ -21,8 +23,9 @@ header_check () {
     echo "This script will check for dependencies, install neccessary components,"
     echo "add a the WebMin repo to APT, import the required key, and install WebMin"
     echo " "
-    read -r -p "Do you want to proceed? [Y/n] " input
-    case $input in
+    read -r -p "Do you want to proceed? [Y/n] " input1
+
+    case $input1 in
         [yY][eE][sS]|[yY])
                 echo "Proceeding with install"
                 ;;
@@ -97,8 +100,6 @@ add_webmin_apt_repo () {
 
 check_dependencies () {
     ##### Check for dependencies and install them if required
-    WGET=$(which wget)
-    GPG=$(which gpg)
 
     # WGET check and install
     if test -f "$WGET"; then
@@ -192,6 +193,29 @@ check_install() {
     fi
 }
 
+update_iptables () {
+    iptables -A INPUT -p tcp --dport 10000 -j ACCEPT
+}
+
+fw_update_req () {
+    read -r -p "Do you need to update the firewall to allow WebMin traffic? [Y/n] " input2
+
+    case $input2 in
+        [yY][eE][sS]|[yY])
+                echo "Updating firewall rules for WebMin"
+                update_iptables
+                ;;
+        [nN][oO]|[nN])
+                echo "NOT proceeding with update"
+                echo "Now exiting"
+                ;;
+        *)
+                echo "Invalid input..."
+                exit 1
+                ;;
+    esac
+}
+
 
 ##### Function to install WebMin on Ubuntu
 main () {
@@ -207,6 +231,8 @@ main () {
     install
 
     check_install
+
+    fw_update_req
 
 }
 
