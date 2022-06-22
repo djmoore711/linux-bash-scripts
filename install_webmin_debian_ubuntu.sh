@@ -21,13 +21,20 @@ header_check () {
     echo "This script will check for dependencies, install neccessary components,"
     echo "add a the WebMin repo to APT, import the required key, and install WebMin"
     echo " "
-    read -n1 -s -r -p $'Press space to continue...\n' keypress
-
-    if [ "$keypress" = ' ' ]; then
-        echo "Continuting with installation"
-    else
-        exit 1
-    fi
+    read -r -p "Do you want to proceed? [Y/n] " input
+    case $input in
+        [yY][eE][sS]|[yY])
+                echo "Proceeding with install"
+                ;;
+        [nN][oO]|[nN])
+                echo "NOT proceeding with install"
+                echo "Now exiting"
+                ;;
+        *)
+                echo "Invalid input..."
+                exit 1
+                ;;
+    esac
 }
 
 ##### Function to check if /etc/apt/sources.list was updated properly
