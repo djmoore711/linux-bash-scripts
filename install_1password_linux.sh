@@ -126,7 +126,7 @@ install_1password_pacman() {
   }
   sleep 2
 
-  sudo install -o root -g root -m 644/tmp/1password.gpg /etc/pacman.d/gnupg/pubring.gpg || {
+  sudo install -o root -g root -m 644 /tmp/1password.gpg /etc/pacman.d/gnupg/pubring.gpg || {
     log "Error: Failed to install the 1Password signing key."
     exit 1
   }
